@@ -38,6 +38,11 @@ describe "ResqueSpec Matchers" do
         it { should have_queued(first_name, last_name) }
         it { should_not have_queued(last_name, first_name) }
       end
+
+      context "assert with argument matcher" do
+        subject { Person }
+        it { should have_queued(instance_of(String), last_name) }
+      end
     end
 
     context "#in" do
@@ -146,6 +151,10 @@ describe "ResqueSpec Matchers" do
 
     it "returns false if the arguments are not found in the queue" do
       Person.should_not have_scheduled(last_name, first_name)
+    end
+
+    it "returns true if the arguments are found by matchers" do
+      Person.should have_scheduled(instance_of(String), last_name)
     end
   end
 end
